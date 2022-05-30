@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  client:
+    build: ./client
+    image: tbstore_client:1
+    container_name: tbs_client
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/app
