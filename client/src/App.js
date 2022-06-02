@@ -1,7 +1,22 @@
-import React from 'react'
+import * as React from 'react'
+import {Routes, Route} from 'react-router-dom'
+
+import {NavBar} from './components/NavBar'
+import {CatalogScreen} from './screens/CatalogScreen'
+import {NotFoundScreen} from './screens/NotFoundScreen'
 
 function App() {
-  return <h1>TBStore</h1>
+  return (
+    <div>
+      <NavBar title="TBStore" />
+      <main className="container mt-5">
+        <Routes>
+          <Route path="/" element={<CatalogScreen />} />
+          <Route path="*" element={<NotFoundScreen />} />
+        </Routes>
+      </main>
+    </div>
+  )
 }
 
 export {App}
