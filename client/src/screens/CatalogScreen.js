@@ -1,10 +1,13 @@
 import * as React from 'react'
+import {Pagination} from '../components/common/Pagination'
 import {getProducts} from '../services/productService'
 
 const allProducts = getProducts()
 
 function CatalogScreen() {
   const [products, setProducts] = React.useState(allProducts)
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const [itemsPerPage, setItemsPerPage] = React.useState(10)
 
   return (
     <>
@@ -38,23 +41,13 @@ function CatalogScreen() {
         </tbody>
       </table>
 
-      <nav>
-        <ul className="pagination justify-content-center">
-          <li className="page-item disabled">
-            <a className="page-link" href="./">
-              <span>&laquo;</span>
-            </a>
-          </li>
-          <li className="page-item disabled">
-            <span className="page-link">1-10 de 11</span>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="./">
-              <span>&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <Pagination
+        alignSelf="center"
+        itemsCount={products.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={page => setCurrentPage(page)}
+      />
     </>
   )
 }
