@@ -1,5 +1,3 @@
-import currencies from '../constants/currencies'
-
 const products = [
   {
     _id: '1b',
@@ -146,18 +144,25 @@ const products = [
   },
 ]
 
+function getProducts() {
+  return products.map(p => {
+    return {...p, price: calculatePrice(p.priceInfo)}
+  })
+}
+
 // https://martinfowler.com/eaaCatalog/money.html
+const EUR = {
+  code: 'EUR',
+  base: 10,
+  precision: 2,
+  symbol: ' €',
+}
+const currencies = {EUR}
+
 function calculatePrice({currency, amount}) {
   const {base, precision, symbol} = currencies[currency]
 
   return `${amount / base ** precision} ${symbol}`
 }
 
-export default function getProducts() {
-  return products.map(product => {
-    const {name, priceInfo, rating, vendor} = product
-    const price = calculatePrice(priceInfo)
-
-    return {name, price, rating, vendor}
-  })
-}
+export {getProducts}
