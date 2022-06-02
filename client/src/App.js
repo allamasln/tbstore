@@ -9,7 +9,7 @@ function App() {
   return (
     <div>
       <NavBar title="TBStore" />
-      <main className="container">
+      <main className="container mt-5">
         <Routes>
           <Route path="/" element={<CatalogScreen />} />
           <Route path="*" element={<NotFoundScreen />} />
