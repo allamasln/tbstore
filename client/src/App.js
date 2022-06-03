@@ -1,9 +1,8 @@
 import * as React from 'react'
 import {Routes, Route} from 'react-router-dom'
-
-import {NavBar} from './components/NavBar'
-import {CatalogScreen} from './screens/CatalogScreen'
-import {NotFoundScreen} from './screens/NotFoundScreen'
+import {NavBar} from 'components/navbar'
+import {CatalogScreen} from 'screens/catalog'
+import {NotFoundScreen} from 'screens/not-found'
 
 function App() {
   return (
