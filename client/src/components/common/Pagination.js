@@ -1,5 +1,15 @@
 import * as React from 'react'
 import {PropTypes} from 'prop-types'
+import styled from '@emotion/styled'
+import * as colors from 'styles/colors'
+import {Button, FlexContainer} from 'components/lib'
+
+const Display = styled(Button)({
+  pointerEvents: 'none',
+  background: 'none',
+  color: colors.text,
+  fontWeight: 'normal',
+})
 
 function Pagination({
   alignSelf,
@@ -7,63 +17,41 @@ function Pagination({
   itemsPerPage,
   currentPage,
   onPageChange,
-  className,
-  ...rest
 }) {
   if (itemsCount === 0) return null
 
   const pagesCount = Math.ceil(itemsCount / itemsPerPage)
+
   if (pagesCount === 1) return null
 
-  const offset = (currentPage - 1) * itemsPerPage + 1
-  const end = currentPage * itemsPerPage
+  const isFirstPage = currentPage === 1
+  const isLastPage = currentPage === pagesCount
 
-  const justifyContentClassName = alignSelf
-    ? `justify-content-${alignSelf}`
-    : ''
+  const offset = (currentPage - 1) * itemsPerPage + 1
+  const end = Math.min(offset + itemsPerPage - 1, itemsCount)
+
+  const prevPage = () => !isFirstPage && onPageChange(currentPage - 1)
+  const nextPage = () => !isLastPage && onPageChange(currentPage + 1)
 
   return (
-    <ul
-      className={`pagination ${className} ${justifyContentClassName}`}
-      {...rest}
-    >
-      <li className={currentPage === 1 ? 'page-item disabled' : 'page-item'}>
-        <button
-          className="page-link"
-          onClick={() => onPageChange(currentPage - 1)}
-        >
-          <span>Anterior</span>
-        </button>
-      </li>
-      <li className="page-item disabled">
-        <span className="page-link mx-1 border-0">
-          {`${offset}-${end < itemsCount ? end : itemsCount} de ${itemsCount}`}
-        </span>
-      </li>
-      <li
-        className={
-          currentPage === pagesCount ? 'page-item disabled' : 'page-item'
-        }
-      >
-        <button
-          className="page-link"
-          onClick={() => onPageChange(currentPage + 1)}
-        >
-          <span>Siguiente</span>
-        </button>
-      </li>
-    </ul>
+    <FlexContainer alignSelf={alignSelf}>
+      <Button onClick={prevPage} disabled={isFirstPage}>
+        Anterior
+      </Button>
+      <Display>{`${offset}-${end} de ${itemsCount}`}</Display>
+      <Button onClick={nextPage} disabled={isLastPage}>
+        Siguiente
+      </Button>
+    </FlexContainer>
   )
 }
 
 Pagination.defaultProps = {
   alignSelf: 'end',
-  className: '',
 }
 
 Pagination.propTypes = {
   alignSelf: PropTypes.string,
-  className: PropTypes.string,
   itemsCount: PropTypes.number.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
