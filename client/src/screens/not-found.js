@@ -1,10 +1,16 @@
-import * as React from 'react'
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import {jsx} from '@emotion/react'
+
+import {SectionHeader} from 'components/lib'
 
 function NotFoundScreen() {
   return (
-    <h2>
-      Oops! <strong>404</strong> Página no encontrada.
-    </h2>
+    <SectionHeader>
+      <h2>
+        Oops! <strong>404</strong> Página no encontrada.
+      </h2>
+    </SectionHeader>
   )
 }
 

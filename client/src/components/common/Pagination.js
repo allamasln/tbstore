@@ -1,7 +1,12 @@
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import {jsx} from '@emotion/react'
+
 import * as React from 'react'
 import {PropTypes} from 'prop-types'
 import styled from '@emotion/styled'
 import * as colors from 'styles/colors'
+import * as mq from 'styles/media-queries'
 import {Button, FlexContainer} from 'components/lib'
 
 const Display = styled(Button)({

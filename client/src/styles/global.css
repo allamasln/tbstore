@@ -1,3 +1,11 @@
+* {
+  outline: none;
+}
+
+html {
+  font-family: Roboto, Helvetica, sans-serif;
+}
+
 /* clears the 'X' from Internet Explorer */
 input[type='search']::-ms-clear {
   display: none;
@@ -16,6 +24,18 @@ input[type='search']::-webkit-search-cancel-button,
 input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
   display: none;
+}
+
+[type='search'] {
+  /* Correct the odd appearance in Chrome and Safari. */
+  -webkit-appearance: textfield;
+  /* Correct the outline style in Safari. */
+  outline-offset: -2px;
+}
+
+/* Remove the inner padding in Chrome and Safari on macOS. */
+[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
 }
 
 a:not(:hover),
