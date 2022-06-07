@@ -9,6 +9,7 @@ import {Spinner, wrapperGutters, Link} from 'components/lib'
 
 function NavBar({title}) {
   const isFetching = useIsFetching()
+
   return (
     <header
       css={{
