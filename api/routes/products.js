@@ -1,11 +1,12 @@
+const { Product } = require("../models/product");
 const { Vendor } = require("../models/vendor");
 const express = require("express");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const vendors = await Vendor.find().sort("name");
+  const products = await Product.find().sort("name");
 
-  res.send(vendors);
+  res.send(products);
 });
 
 module.exports = router;
