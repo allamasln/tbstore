@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const vendorSchema = new mongoose.Schema({
   name: {
@@ -18,9 +18,9 @@ const vendorSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-});
+})
 
-const Vendor = mongoose.model("Vendor", vendorSchema);
+const Vendor = mongoose.model('Vendor', vendorSchema)
 
-exports.vendorSchema = vendorSchema;
-exports.Vendor = Vendor;
+exports.vendorSchema = vendorSchema
+exports.Vendor = Vendor
