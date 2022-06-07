@@ -1,14 +1,34 @@
-import * as React from 'react'
-import {Link} from 'react-router-dom'
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import {jsx} from '@emotion/react'
+
 import {PropTypes} from 'prop-types'
+import {useIsFetching} from 'react-query'
+import * as colors from 'styles/colors'
+import {Spinner, wrapperGutters, Link} from 'components/lib'
 
 function NavBar({title}) {
+  const isFetching = useIsFetching()
   return (
-    <header className="navbar bg-light">
-      <nav className="container">
-        <Link className="navbar-brand" to="/">
+    <header
+      css={{
+        background: colors.gray,
+        color: colors.black,
+        padding: '0.8rem 0px',
+      }}
+    >
+      <nav
+        css={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          ...wrapperGutters,
+        }}
+      >
+        <Link to="/">
           <h1>{title}</h1>
         </Link>
+        {isFetching ? <Spinner size="30" /> : null}
       </nav>
     </header>
   )

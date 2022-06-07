@@ -17,9 +17,10 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', 'react-hooks', 'prettier'],
+  plugins: ['@emotion', 'react', 'react-hooks', 'prettier'],
   rules: {
     'prettier/prettier': 'error',
+    'react/prop-types': [2, {ignore: ['children']}],
     'react/jsx-filename-extension': [1, {extensions: ['.js', '.jsx']}],
   },
 }
