@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "db:up": "migrate-mongo up",
+    "start": "nodemon --ignore './tests' index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,5 +14,9 @@
     "config": "^3.3.7",
     "express": "^4.18.1",
     "mongoose": "^6.3.5"
+  },
+  "devDependencies": {
+    "migrate-mongo": "^9.0.0",
+    "nodemon": "^2.0.16"
   }
 }
