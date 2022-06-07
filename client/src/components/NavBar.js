@@ -3,10 +3,12 @@
 import {jsx} from '@emotion/react'
 
 import {PropTypes} from 'prop-types'
+import {useIsFetching} from 'react-query'
 import * as colors from 'styles/colors'
 import {Spinner, wrapperGutters, Link} from 'components/lib'
 
 function NavBar({title}) {
+  const isFetching = useIsFetching()
   return (
     <header
       css={{
@@ -26,6 +28,7 @@ function NavBar({title}) {
         <Link to="/">
           <h1>{title}</h1>
         </Link>
+        {isFetching ? <Spinner size="30" /> : null}
       </nav>
     </header>
   )

@@ -7,10 +7,13 @@ import {wrapperGutters} from 'components/lib'
 import {NavBar} from 'components/navbar'
 import {CatalogScreen} from 'screens/catalog'
 import {NotFoundScreen} from 'screens/not-found'
-import {wrapperGutters} from 'components/lib'
+
+import {QueryClient, QueryClientProvider} from 'react-query'
+const queryClient = new QueryClient()
 
 function App() {
   return (
+    <QueryClientProvider client={queryClient}>
       <div>
         <NavBar title="TBStore" />
         <main css={wrapperGutters}>
@@ -20,6 +23,7 @@ function App() {
           </Routes>
         </main>
       </div>
+    </QueryClientProvider>
   )
 }
 
