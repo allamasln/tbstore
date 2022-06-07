@@ -1,8 +1,13 @@
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import {jsx} from '@emotion/react'
+
 import * as React from 'react'
-import {Pagination} from 'components/common/pagination'
-import {SearchField} from 'components/common/search-field'
+import * as mq from 'styles/media-queries'
+import * as colors from 'styles/colors'
 import {ProductsTable} from 'components/products-table'
 import {getProducts} from 'services/productService'
+import {SearchBox, SectionHeader} from 'components/lib'
 
 function CatalogScreen() {
   const [products, setProducts] = React.useState([])
@@ -19,23 +24,29 @@ function CatalogScreen() {
 
   return (
     <>
-      <div className="row mb-2">
-        <h2 className="col">Catálogo de productos</h2>
-        <SearchField
-          className="col"
-          value={searchQuery}
+      <SectionHeader
+        css={{
+          position: 'sticky',
+          top: '0',
+          display: 'grid',
+          gridTemplateAreas: "'title search'",
+          gridGap: '1rem',
+          '>[role="search"]': {
+            gridArea: 'search',
+          },
+          [mq.small]: {
+            gridTemplateAreas: "'search' 'title'",
+          },
+        }}
+      >
+        <h2>Catálogo de productos</h2>
+        <SearchBox
+          type="search"
+          name="query"
           onChange={handleSearchQuery}
           placeholder="Buscar por producto o fabricante"
         />
-      </div>
-      <ProductsTable products={products} />
-      <Pagination
-        alignSelf="center"
-        itemsCount={products.length}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
+      </SectionHeader>
     </>
   )
 }

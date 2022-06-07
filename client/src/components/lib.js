@@ -8,6 +8,7 @@ import {Link as LinkRouter} from 'react-router-dom'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
 import {FaSpinner, FaSearch} from 'react-icons/fa'
+
 const wrapperGutters = {
   padding: '0px 15%',
   [mq.small]: {
@@ -75,6 +76,36 @@ const Button = styled.button(
   ({disabled = 'false'}) => disabledButtonStyles[disabled],
 )
 
+const Input = styled.input({
+  border: `2px solid ${colors.gray10}`,
+  borderRadius: '3px',
+  background: colors.gray,
+  padding: '0.8rem 1rem',
+  width: '100%',
+  ':hover,:focus': {
+    filter: 'brightness(102%)',
+  },
+})
+
+function SearchBox(props) {
+  return (
+    <form
+      role="search"
+      css={{
+        display: 'grid',
+        placeItems: 'center right',
+        '> *': {
+          gridArea: '1 / 1',
+          zIndex: '0',
+        },
+      }}
+      autoComplete="off"
+    >
+      <Input {...props} />
+      <FaSearch css={{marginRight: '1rem'}} size="23" />
+    </form>
+  )
+}
 
 const spin = keyframes({
   '0%': {transform: 'rotate(0deg)'},
@@ -93,6 +124,8 @@ export {
   SectionHeader,
   FlexContainer,
   Button,
+  Input,
+  SearchBox,
   Spinner,
   Link,
   Pagination,
