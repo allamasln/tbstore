@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const { vendorSchema } = require("./vendor");
+const mongoose = require('mongoose')
+const {vendorSchema} = require('./vendor')
 
 const Product = mongoose.model(
-  "Products",
+  'Products',
   new mongoose.Schema({
     name: {
       type: String,
@@ -18,7 +18,7 @@ const Product = mongoose.model(
         },
         currency: {
           type: String,
-          default: "EUR",
+          default: 'EUR',
         },
       },
     ],
@@ -32,7 +32,7 @@ const Product = mongoose.model(
       type: vendorSchema,
       required: true,
     },
-  })
-);
+  }),
+)
 
-exports.Product = Product;
+exports.Product = Product

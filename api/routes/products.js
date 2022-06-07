@@ -1,12 +1,11 @@
-const { Product } = require("../models/product");
-const { Vendor } = require("../models/vendor");
-const express = require("express");
-const router = express.Router();
+const {Product} = require('../models/product')
+const express = require('express')
+const router = express.Router()
 
-router.get("/", async (req, res) => {
-  const products = await Product.find().sort("name");
+router.get('/', async (req, res) => {
+  const products = await Product.find().sort('name')
 
-  res.send(products);
-});
+  res.send(products)
+})
 
-module.exports = router;
+module.exports = router

@@ -1,4 +1,4 @@
 {
   "name": "tbstore",
-  "db": "mongodb://localhost/tbstore"
+  "db": "mongodb://db/tbstore"
 }

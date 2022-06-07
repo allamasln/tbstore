@@ -2,6 +2,8 @@ version: "3.8"
 
 services:
   client:
+    depends_on:
+      - api
     build: ./client
     image: tbstore_client:1
     container_name: tbs_client
@@ -9,3 +11,24 @@ services:
       - 3000:3000
     volumes:
       - ./client:/app
+  api:
+    depends_on:
+      - db
+    build: ./api
+    image: tbstore_api:1
+    container_name: tbs_api
+    ports:
+      - 3001:3001
+    environment:
+      DB_URL: mongodb://db/tbstore
+    command: ./docker-entrypoint.sh
+  db:
+    image: mongo:5.0.7-focal
+    container_name: tbs_db
+    ports:
+      - 27017:27017
+    volumes:
+      - tbstore:/data/db
+
+volumes:
+  tbstore:

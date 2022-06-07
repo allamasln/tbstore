@@ -1,8 +1,3 @@
-const {Vendor} = require('./models/vendor')
-const {Product} = require('./models/product')
-const mongoose = require('mongoose')
-const config = require('config')
-
 const data = [
   {
     name: 'Consequat',
@@ -85,38 +80,31 @@ const data = [
   },
 ]
 
-async function seed() {
-  await mongoose.connect(config.get('db'))
+module.exports = {
+  async up(db) {
+    for (let vendor of data) {
+      const {insertedId} = await db.collection('vendors').insertOne({...vendor})
 
-  try {
-    await Vendor.deleteMany({})
-    await Product.deleteMany({})
-    await Product.collection.dropIndexes()
-    await Vendor.collection.dropIndexes()
-  } catch (error) {
-    console.info(
-      'Try it again. If it persist then you can drop indexes from your db server.',
-    )
-    process.exit(1)
-  }
+      const products = vendor.products.map(product => ({
+        ...product,
+        vendor: {
+          _id: insertedId,
+          ...vendor,
+        },
+      }))
 
-  for (let vendor of data) {
-    const {_id: vendorId} = await new Vendor({
-      ...vendor,
-    }).save()
-    const products = vendor.products.map(product => ({
-      ...product,
+      await db.collection('products').insertMany(products)
+    }
+  },
+
+  async down(db) {
+    const vendors = await db.collection('vendors').find({}).toArray()
+
+    await db.collection('products').deleteMany({
       vendor: {
-        _id: vendorId,
-        ...vendor,
+        $in: [...vendors],
       },
-    }))
-    await Product.insertMany(products)
-  }
-
-  mongoose.disconnect()
-
-  console.info('seed uploaded.')
+    })
+    await db.collection('vendors').deleteMany()
+  },
 }
-
-seed()
