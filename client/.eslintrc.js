@@ -20,7 +20,7 @@ module.exports = {
   plugins: ['@emotion', 'react', 'react-hooks', 'prettier'],
   rules: {
     'prettier/prettier': 'error',
-    'react/prop-types': [2, {ignore: ['children']}],
+    'react/prop-types': ['off'],
     'react/jsx-filename-extension': [1, {extensions: ['.js', '.jsx']}],
   },
 }

@@ -1,18 +1,22 @@
-import {useState, useMemo} from 'react'
+import * as React from 'react'
 
-function usePaging(itemCount, itemsPerPage, {initialPage = 1} = {}) {
-  const [currentPage, setCurrentPage] = useState(initialPage)
+function usePaging(itemCount, itemsPerPage, initialPage) {
+  const [currentPage, setCurrentPage] = React.useState(initialPage)
+
   const pagesCount = Math.ceil(itemCount / itemsPerPage)
+  const isFirstPage = itemCount === 0 || currentPage === 1
+  const isLastPage = itemCount === 0 || currentPage === pagesCount
 
-  const isFirstPage = currentPage === 1
-  const isLastPage = currentPage === pagesCount
-
-  let actions = useMemo(() => {
+  let actions = React.useMemo(() => {
     return {
-      prevPage: () => !isFirstPage && setCurrentPage(currentPage - 1),
-      nextPage: () => !isLastPage && setCurrentPage(currentPage + 1),
+      prevPage: () => !isFirstPage && setCurrentPage(oldPage => oldPage - 1),
+      nextPage: () => !isLastPage && setCurrentPage(oldPage => oldPage + 1),
     }
-  }, [currentPage, isFirstPage, isLastPage])
+  }, [isFirstPage, isLastPage])
+
+  React.useEffect(() => {
+    if (itemCount === 0 || currentPage > pagesCount) setCurrentPage(1)
+  }, [currentPage, itemCount, pagesCount])
 
   return {
     isFirstPage,
@@ -26,7 +30,7 @@ function usePaging(itemCount, itemsPerPage, {initialPage = 1} = {}) {
 export const usePagedItems = function (
   allItems,
   itemsPerPage,
-  {initialPage = 1} = {},
+  initialPage = 1,
 ) {
   const paging = usePaging(allItems.length, itemsPerPage, initialPage)
 

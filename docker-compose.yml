@@ -20,6 +20,7 @@ services:
     ports:
       - 3001:3001
     environment:
+      CORSHEADER: "http://localhost:3000"
       DB_URL: mongodb://db/tbstore
     command: ./docker-entrypoint.sh
   db:
@@ -29,6 +30,5 @@ services:
       - 27017:27017
     volumes:
       - tbstore:/data/db
-
 volumes:
   tbstore:

@@ -2,13 +2,13 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/react'
 
+import {QueryClient, QueryClientProvider} from 'react-query'
 import {Routes, Route} from 'react-router-dom'
-import {wrapperGutters} from 'components/lib'
-import {NavBar} from 'components/navbar'
 import {CatalogScreen} from 'screens/catalog'
 import {NotFoundScreen} from 'screens/not-found'
+import {wrapperGutters} from 'components/lib'
+import {NavBar} from 'components/navbar'
 
-import {QueryClient, QueryClientProvider} from 'react-query'
 const queryClient = new QueryClient()
 
 function App() {
