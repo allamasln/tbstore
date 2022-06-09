@@ -210,7 +210,27 @@ Spinner.defaultProps = {
   'aria-label': 'Cargando...',
 }
 
+function FullPageErrorFallback({error}) {
+  return (
+    <div
+      role="alert"
+      css={{
+        color: colors.danger,
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <p>Ops! Problema detectado:</p>
+      <pre>{error.message}</pre>
+    </div>
+  )
+}
+
 export {
+  FullPageErrorFallback,
   wrapperGutters,
   SectionHeader,
   FlexContainer,
