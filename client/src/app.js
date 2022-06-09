@@ -4,9 +4,9 @@ import {jsx} from '@emotion/react'
 
 import {QueryClient, QueryClientProvider} from 'react-query'
 import {Routes, Route} from 'react-router-dom'
-import {wrapperGutters} from 'components/lib'
 import {CatalogScreen} from 'screens/catalog'
 import {NotFoundScreen} from 'screens/not-found'
+import {wrapperGutters} from 'components/lib'
 import {NavBar} from 'components/navbar'
 
 const queryClient = new QueryClient()

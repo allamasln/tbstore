@@ -3,31 +3,73 @@
 import {jsx} from '@emotion/react'
 
 import * as React from 'react'
+import styled from '@emotion/styled/macro'
 import * as mq from 'styles/media-queries'
-import * as colors from 'styles/colors'
-import {
-  SearchBox,
-  SectionHeader,
-  Button,
-  Pagination,
-  collapse,
-} from 'components/lib'
+import {SearchBox, SectionHeader, Button, Pagination} from 'components/lib'
 import {useTable} from 'utils/table'
 import {useProducts} from 'utils/products'
 import * as Table from 'components/table'
 
 function CatalogScreen() {
-  const [expandedProduct, setExpandedProduct] = React.useState({})
+  const [expanded, setExpanded] = React.useState({})
+  const products = useProducts()
+  const {
+    data: filteredProducts,
+    searching,
+    sorting,
+    paging,
+    stats,
+  } = useTable(products, {
+    sortProperty: 'name',
+    sortOrder: 'asc',
+    queryProperties: ['name', 'vendor.name'],
+    itemsPerPage: 10,
+  })
 
-  const posts = useProducts()
-  const {data: products, paging, stats} = useTable(posts, {itemsPerPage: 10})
+  const handleExpand = product =>
+    setExpanded(({product: oldProduct}) => {
+      const {_id, name, address, city} = product.vendor
 
-  const handleSearchQuery = query => setSearchQuery(query)
+      const DetailsHeader = styled.strong({
+        textTransform: 'uppercase',
+        [mq.small]: {
+          display: 'none',
+        },
+      })
+      const DetailsBody = styled.ul({
+        listStyle: 'none',
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: '0',
+        [mq.small]: {
+          display: 'list-item',
+        },
+      })
 
-  const expandProduct = product =>
-    setExpandedProduct(oldExpandedProduct =>
-      oldExpandedProduct === product ? null : product,
-    )
+      return oldProduct === product
+        ? {}
+        : {
+            product,
+            details: (
+              <Table.Row role="complementary" key={_id}>
+                <Table.DetailsCell data-label="Fabricante">
+                  <DetailsHeader>Fabricante</DetailsHeader>
+                  <DetailsBody>
+                    <li>
+                      <strong>Empresa:</strong> {name}
+                    </li>
+                    <li>
+                      <strong>Dirección:</strong> {address}
+                    </li>
+                    <li>
+                      <strong>Localidad:</strong> {city}
+                    </li>
+                  </DetailsBody>
+                </Table.DetailsCell>
+              </Table.Row>
+            ),
+          }
+    })
 
   return (
     <>
@@ -50,73 +92,43 @@ function CatalogScreen() {
         <SearchBox
           type="search"
           name="query"
-          onChange={handleSearchQuery}
+          value={searching.query}
+          onChange={e => searching.setQuery(e.target.value)}
           placeholder="Buscar por producto o fabricante"
         />
       </SectionHeader>
 
       <Table.Table>
-        <Table.Head>
-          <Table.Row>
-            <Table.Column>IDUsuario</Table.Column>
-            <Table.Column>ID</Table.Column>
-            <Table.Column>Title</Table.Column>
-            <Table.Column>Body</Table.Column>
-          </Table.Row>
+        <Table.Head {...sorting}>
+          <Table.Column id="name">Nombre</Table.Column>
+          <Table.Column id="priceInfo.amount">Precio</Table.Column>
+          <Table.Column id="rating">Rating</Table.Column>
         </Table.Head>
         <Table.Body>
-          {products.map(product => {
-            let productRows = [
-              <Table.Row
-                onClick={() => expandProduct(product)}
-                key={product.id}
-              >
-                <Table.Cell>{product.userId}</Table.Cell>
-                <Table.Cell>{product.id}</Table.Cell>
-                <Table.Cell>{product.title}</Table.Cell>
-                <Table.Cell>{product.body}</Table.Cell>
-              </Table.Row>,
-            ]
+          {filteredProducts.map(product => {
+            const {_id, name, priceInfo, rating} = product
+            const ProductRow = (
+              <Table.Row onClick={() => handleExpand(product)} key={_id}>
+                <Table.Cell>{name}</Table.Cell>
+                <Table.Cell>{priceInfo.amount}</Table.Cell>
+                <Table.Cell>{rating}</Table.Cell>
+              </Table.Row>
+            )
 
-            if (product === expandedProduct) {
-              productRows = [
-                ...productRows,
-                <Table.Row
-                  role="complementary"
-                  key={product.id + 'df'}
-                  css={{
-                    pointerEvents: 'none',
-                    animation: `${collapse} 0.4s ease 1`,
-                    '&&': {
-                      backgroundColor: colors.yellowLighten10,
-                    },
-                  }}
-                >
-                  <Table.DetailsCell colSpan="4" data-label="Fabricante">
-                    asdfsa
-                  </Table.DetailsCell>
-                </Table.Row>,
-              ]
-            }
-
-            return productRows
+            return product === expanded.product
+              ? [ProductRow, expanded.details]
+              : ProductRow
           })}
         </Table.Body>
       </Table.Table>
+
       <Pagination>
         <Button onClick={paging.prevPage} disabled={paging.isFirstPage}>
           Anterior
         </Button>
-        <span
-          css={{
-            pointerEvents: 'none',
-            background: 'none',
-            color: colors.text,
-            fontWeight: 'normal',
-            lineHeight: '1',
-            padding: '0.8rem 1rem',
-          }}
-        >{`${stats.start}-${stats.end} de ${stats.itemsCount}`}</span>
+        <span css={{padding: '0.8rem 1rem'}}>
+          {`${stats.start}-${stats.end} de ${stats.itemsCount}`}
+        </span>
         <Button onClick={paging.nextPage} disabled={paging.isLastPage}>
           Siguiente
         </Button>

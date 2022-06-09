@@ -7,7 +7,7 @@ import {keyframes} from '@emotion/react/macro'
 import {Link as LinkRouter} from 'react-router-dom'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
-import {FaSpinner, FaSearch} from 'react-icons/fa'
+import {FaSpinner, FaSearch, FaAngleUp} from 'react-icons/fa'
 
 const wrapperGutters = {
   padding: '0px 15%',
@@ -39,20 +39,13 @@ const Pagination = styled.div({
     justifyContent: 'end',
   },
 })
-const FlexContainer = styled.div(
-  {
-    display: 'flex',
-  },
-  ({alignSelf = 'start'}) => ({
-    justifyContent: alignSelf,
-  }),
-)
 
 const Link = styled(LinkRouter)({color: colors.link})
 
 const TableBase = styled.table({
   borderCollapse: 'collapse',
   tableLayout: 'fixed',
+  width: '100%',
 })
 const THead = styled.thead({
   position: 'sticky',
@@ -96,6 +89,9 @@ const TBody = styled.tbody({
     animation: `${zoomInOut} ease .4s`,
   },
   [mq.small]: {
+    '>tr': {
+      border: `3px solid ${colors.gray}`,
+    },
     '>:nth-of-type(even):hover': {
       animation: 'none',
       backgroundColor: colors.gray10,
@@ -107,18 +103,34 @@ const TBody = styled.tbody({
   },
 })
 const TR = styled.tr({
+  '&[role="complementary"]': {
+    padding: '0',
+    pointerEvents: 'none',
+    animation: `${collapse} 0.4s ease 1`,
+    '&&': {
+      backgroundColor: colors.yellowLighten10,
+    },
+  },
   [mq.small]: {
     display: 'block',
     marginBottom: '.625em',
+    '& + [role="complementary"]': {
+      marginTop: '-.625em',
+      borderTop: '0',
+    },
   },
 })
 const TH = styled.th({
-  fontSize: '0.75em',
+  fontSize: '0.75rem',
   letterSpacing: '0.1em',
   textTransform: 'uppercase',
   padding: '0.8rem 1rem',
   background: colors.gray80,
   color: colors.base,
+  cursor: 'pointer',
+  ':hover > * ': {
+    visibility: 'visible',
+  },
 })
 
 const TD = styled.td({
@@ -140,6 +152,24 @@ const TD = styled.td({
     },
   },
 })
+
+const arrowDirection = {
+  asc: {transform: 'rotate(0)'},
+  desc: {transform: 'rotate(180deg)'},
+  false: {
+    color: colors.base,
+    visibility: 'hidden',
+  },
+}
+
+const SortIcon = styled(FaAngleUp)(
+  {
+    transition: 'transform 0.2s',
+    color: colors.blueLighten10,
+    marginLeft: '5px',
+  },
+  ({sortorder = 'false'}) => arrowDirection[sortorder],
+)
 
 const disabledButtonStyles = {
   true: {
@@ -233,7 +263,6 @@ export {
   FullPageErrorFallback,
   wrapperGutters,
   SectionHeader,
-  FlexContainer,
   Button,
   Input,
   SearchBox,
@@ -247,4 +276,5 @@ export {
   Link,
   Pagination,
   collapse,
+  SortIcon,
 }
