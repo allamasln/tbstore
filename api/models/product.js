@@ -9,19 +9,17 @@ const Product = mongoose.model(
       trim: true,
       required: true,
     },
-    priceInfo: [
-      {
-        amount: {
-          type: Number,
-          min: 0,
-          required: true,
-        },
-        currency: {
-          type: String,
-          default: 'EUR',
-        },
+    priceInfo: {
+      amount: {
+        type: Number,
+        min: 0,
+        required: true,
       },
-    ],
+      currency: {
+        type: String,
+        default: 'EUR',
+      },
+    },
     rating: {
       type: Number,
       min: 0,
