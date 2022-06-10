@@ -10,6 +10,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-18.04
+    defaults:
+      run:
+        working-directory: "client"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -17,7 +20,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - run: cd client
       - name: Install dependencies
         run: npm install --no-audit --no-fund --no-optional
       - name: Lint
