@@ -8,6 +8,7 @@ import * as mq from 'styles/media-queries'
 import {SearchBox, SectionHeader, Button, Pagination} from 'components/lib'
 import {useTable} from 'utils/table'
 import {useProducts} from 'utils/products'
+import {formatPrice} from 'utils/misc'
 import * as Table from 'components/table'
 
 function CatalogScreen() {
@@ -110,7 +111,7 @@ function CatalogScreen() {
             const ProductRow = (
               <Table.Row onClick={() => handleExpand(product)} key={_id}>
                 <Table.Cell>{name}</Table.Cell>
-                <Table.Cell>{priceInfo.amount}</Table.Cell>
+                <Table.Cell>{formatPrice(priceInfo)}</Table.Cell>
                 <Table.Cell>{rating}</Table.Cell>
               </Table.Row>
             )
