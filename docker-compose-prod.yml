@@ -2,15 +2,15 @@ version: "3.8"
 
 services:
   client:
-    depends_on:
-      - api
-    build: ./client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
     image: tbstore_client:1
     container_name: tbs_client
     ports:
-      - 3000:3000
-    volumes:
-      - ./client:/app
+      - 80:80
+    restart: unless-stopped
+
   api:
     depends_on:
       - db
@@ -22,10 +22,8 @@ services:
     environment:
       CORSHEADER: "http://localhost:3000"
       DB_URL: mongodb://db/tbstore
-    volumes:
-      - .api:/app
     command: ./docker-entrypoint.sh
-
+    restart: unless-stopped
   db:
     image: mongo:5.0.7-focal
     container_name: tbs_db
@@ -33,5 +31,6 @@ services:
       - 27017:27017
     volumes:
       - tbstore:/data/db
+    restart: unless-stopped
 volumes:
   tbstore:
