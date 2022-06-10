@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: "client"
@@ -17,14 +17,29 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16"
       - name: Install dependencies
-        run: npm install --no-audit --no-fund --no-optional
+        run: npm install
       - name: Lint
         run: npm run eslint
       - name: Build
         run: npm run build
       - name: Test
         run: npm test
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: pwd
+        run: git config --global init.defaultBranch main
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: client/prod/Dockerfile
+          push: true
+          tags: allamasln/tbstore:prod.1
