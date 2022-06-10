@@ -31,3 +31,12 @@ jobs:
       - name: Stop containers
         if: always()
         run: docker-compose -f "docker-compose-prod.yml" down
+
+      - name: Build, Push and Deploy to Heroku #set the whatever name you want to this step
+        id: heroku
+        uses: snithyanantham/docker-compose-multiple-apps-heroku-deploy@v1.0 # use the latest version of the action
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }} # your heroku email
+          api_key: ${{ secrets.HEROKU_API_KEY }} # your  heroku api key
+          docker_compose_file: "./docker-compose.prod.yml" # set the path to the folder where the docker-compose file is located
+          heroku_apps: '[{"imagename":"prod/client","appname":"tbstore","apptype":"web"},{"imagename":"prod/api","appname":"app2","apptype":"web"},{"imagename":"mongo","appname":"tbstore","apptype":"web"}]' # List of Docker Image name, Heroku app and Heroku app type
