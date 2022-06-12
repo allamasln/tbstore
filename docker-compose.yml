@@ -5,7 +5,7 @@ services:
     depends_on:
       - api
     build: ./client
-    image: tbs-client-dev:1
+    image: tbs-client-dev:latest
     stdin_open: true
     ports:
       - 3000:3000
@@ -18,7 +18,7 @@ services:
     depends_on:
       - db
     build: ./api
-    image: tbs-api:1
+    image: tbs-api:latest
     ports:
       - 3001:3001
     environment:

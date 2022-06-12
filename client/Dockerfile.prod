@@ -16,7 +16,7 @@ RUN yarn build
 FROM caddy:2.5.1-alpine
 
 ARG CADDYFILE
-COPY ${CADDYFILE} /etc/caddy/Caddyfile
+COPY ${CADDYFILE} ./etc/caddy/Caddyfile
 COPY --from=build-stage /usr/src/app/build /srv
 
 EXPOSE 80

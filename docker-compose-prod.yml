@@ -4,7 +4,7 @@ services:
   client:
     depends_on:
       - api
-    image: tbs-client-prod:${ENV}
+    image: allamasln/tbs-client-prod:${ENV_VERSION}
     stdin_open: true
     ports:
       - 80:80
@@ -17,7 +17,7 @@ services:
       - caddy-config:/config
 
   api:
-    image: tbs-api:1
+    image: allamasln/tbs-api:${ENV_VERSION}
     ports:
       - 3001:3001
     networks:
@@ -30,8 +30,6 @@ networks:
 
 volumes:
   tbs-mongo:
-    driver: local
-  mongo-data:
     driver: local
   caddy-data:
     driver: local
