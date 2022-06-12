@@ -4,7 +4,7 @@ services:
   client:
     depends_on:
       - api
-    image: tbs-client-prod:1-${ENV}
+    image: tbs-client-prod:${ENV}
     stdin_open: true
     ports:
       - 80:80

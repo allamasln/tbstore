@@ -23,9 +23,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+      - name: Build and push api server image
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}:api"
           push: true
-          tags: allamasln/tbs-api:1-prod
+          tags: allamasln/tbs-api:1
+      - name: Build and push client-dev
+        uses: docker/build-push-action@v3
+        with:
+          context: "{{defaultContext}}:client"
+          push: true
+          tags: allamasln/tbs-client-dev:1

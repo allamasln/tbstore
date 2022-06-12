@@ -3,7 +3,7 @@ build-dev:
 	cd api && $(MAKE) build
 
 run-dev:
-	ENV=dev docker-compose -f docker-compose.yml up
+	docker-compose -f docker-compose.yml up
 
 ###
 
@@ -21,4 +21,4 @@ build-prod:
 	cd api && $(MAKE) build
 
 run-prod:
-	ENV=prod docker-compose -f docker-compose-prod.yml up
+	docker-compose -f docker-compose-prod.yml up
