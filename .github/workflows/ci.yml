@@ -35,3 +35,10 @@ jobs:
           context: "{{defaultContext}}:client"
           push: true
           tags: allamasln/tbs-client-dev:1
+      - name: Build and push client-prod
+        uses: docker/build-push-action@v3
+        with:
+          context: "{{defaultContext}}:client"
+          path: "{{context}}/Dockerfile.prod"
+          push: true
+          tags: allamasln/tbs-client-prod:1
