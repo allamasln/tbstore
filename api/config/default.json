@@ -1,5 +1,0 @@
-{
-  "name": "tbstore",
-  "db": "mongodb://db/tbstore",
-  "port": "3001"
-}

@@ -1,13 +1,13 @@
-FROM node:16.15.0-alpine3.15
+FROM node:16.15-slim
 
-RUN addgroup app && adduser -S -G app app
-USER app
-
-WORKDIR /app 
-COPY --chown=app:node package*.json ./ 
-RUN npm install 
-COPY --chown=app:node . .
+WORKDIR /usr/src/app
+COPY package.json ./
+COPY ./yarn.lock ./ 
+RUN yarn install 
+COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+ENV REACT_APP_API_URL=http://localhost:3001/api
+
+CMD ["yarn", "start"]

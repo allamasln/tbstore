@@ -1,4 +1,4 @@
-name: Deployment pipeline
+name: ci
 
 on:
   push:
@@ -10,36 +10,22 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "client"
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Install dependencies
-        run: npm install
-      - name: Lint
-        run: npm run eslint
-      - name: Build
-        run: npm run build
-      - name: Test
-        run: npm test
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Login to Docker Hub
+      - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: pwd
-        run: git config --global init.defaultBranch main
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: .
-          file: client/prod/Dockerfile
+          context: "{{defaultContext}}:api"
           push: true
-          tags: allamasln/tbstore:prod.1
+          tags: allamasln/tbs-api:1-prod

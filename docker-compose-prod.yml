@@ -2,33 +2,38 @@ version: "3.8"
 
 services:
   client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile.prod
+    depends_on:
+      - api
+    image: tbs-client-prod:1-${ENV}
+    stdin_open: true
     ports:
-      - 8080:8080
+      - 80:80
+      - 443:443
+    networks:
+      - mern-app
     restart: unless-stopped
-    image: prod/client:1
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
 
   api:
-    depends_on:
-      - db
-    build: ./api
+    image: tbs-api:1
     ports:
       - 3001:3001
-    environment:
-      CORSHEADER: "http://localhost:3000"
-      DB_URL: mongodb://db/tbstore
-    command: ./docker-entrypoint.sh
+    networks:
+      - mern-app
     restart: unless-stopped
-    image: prod/api:1
 
-  db:
-    image: mongo:5.0.7-focal
-    ports:
-      - 27017:27017
-    volumes:
-      - tbstore:/data/db
-    restart: unless-stopped
+networks:
+  mern-app:
+    driver: bridge
+
 volumes:
-  tbstore:
+  tbs-mongo:
+    driver: local
+  mongo-data:
+    driver: local
+  caddy-data:
+    driver: local
+  caddy-config:
+    driver: local

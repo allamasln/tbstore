@@ -1,11 +1,11 @@
-FROM node:14
-WORKDIR /app 
-COPY package*.json ./ 
-RUN npm install 
+FROM node:16.15-slim
+
+WORKDIR /usr/src/app
+COPY package.json ./
+COPY ./yarn.lock ./ 
+RUN yarn install 
 COPY . .
 
 EXPOSE 3001
 
-CMD ["npm", "dev"]
-
-
+CMD yarn start

@@ -1,0 +1,9 @@
+tbstore.allamas.com:443 {
+  tls antonio@allamas.com
+  root * /srv
+  route {
+    reverse_proxy /api* api:3001
+    try_files {path} {path}/ /index.html
+    file_server
+  }
+}

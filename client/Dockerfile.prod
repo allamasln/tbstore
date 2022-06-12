@@ -1,12 +1,23 @@
-FROM node:14 as builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+# Step 1: build-stage
+FROM node:16.15-slim as build-stage
 
-FROM nginx
-COPY --from=builder /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/
-EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /usr/src/app
+COPY package.json ./
+COPY ./yarn.lock ./ 
+RUN yarn install 
+COPY . .
+
+ARG BASE_URL
+ENV REACT_APP_API_URL=${BASE_URL}
+
+RUN yarn build
+
+#Step 2: Copy into server
+FROM caddy:2.5.1-alpine
+
+ARG CADDYFILE
+COPY ${CADDYFILE} /etc/caddy/Caddyfile
+COPY --from=build-stage /usr/src/app/build /srv
+
+EXPOSE 80
+EXPOSE 443

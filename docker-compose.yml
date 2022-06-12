@@ -5,33 +5,43 @@ services:
     depends_on:
       - api
     build: ./client
-    image: tbstore_client:1
-    container_name: tbs_client
+    image: tbs-client-dev:1-${ENV}
+    stdin_open: true
     ports:
       - 3000:3000
     volumes:
-      - ./client:/app
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - mern-app
   api:
     depends_on:
       - db
     build: ./api
-    image: tbstore_api:1
-    container_name: tbs_api
+    image: tbs-api:1
     ports:
       - 3001:3001
     environment:
-      CORSHEADER: "http://localhost:3000"
-      DB_URL: mongodb://db/tbstore
+      MONGO_URI: mongodb://db/tbstore
     volumes:
-      - ./api:/app
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
     command: ./docker-entrypoint.sh
+    networks:
+      - mern-app
 
   db:
     image: mongo:5.0.7-focal
-    container_name: tbs_db
     ports:
       - 27017:27017
     volumes:
-      - tbstore:/data/db
+      - tbs-mongo:/data/db
+    networks:
+      - mern-app
 volumes:
-  tbstore:
+  tbs-mongo:
+    driver: local
+
+networks:
+  mern-app:
+    driver: bridge
