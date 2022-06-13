@@ -5,7 +5,6 @@ const {version} = require('./package.json')
 require('dotenv').config()
 
 require('./startup/logging')()
-
 require('./startup/cors')(app)
 require('./startup/routes')(app)
 require('./startup/db')()

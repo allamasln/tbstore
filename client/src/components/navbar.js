@@ -29,7 +29,7 @@ function NavBar({title}) {
         <Link to="/">
           <h1>{title}</h1>
         </Link>
-        {isFetching ? <Spinner size="30" /> : null}
+        {isFetching && <Spinner size="30" />}
       </nav>
     </header>
   )
