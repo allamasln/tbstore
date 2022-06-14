@@ -1,2 +1,2 @@
 build:
-	docker build -t tbs-api:1 .
+	docker build -t tbs-api:${TAG} .

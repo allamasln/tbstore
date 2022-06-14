@@ -1,6 +1,6 @@
 .PHONY: build
 build-dev:
-	docker build -t tbs-client-dev:1 .
+	docker build -t tbs-client-dev:dev .
 
 build-local:
 	docker build \
@@ -11,7 +11,13 @@ build-local:
 
 build-prod:
 	docker build \
-		-t tbs-client-prod:1 \
+		-t tbs-client-prod:${TAG} \
 		--build-arg CADDYFILE=Caddyfile.prod \
-		--build-arg BASE_URL=https://tbstore.allamas.com/api \
 		-f Dockerfile.prod .
+
+# build-prod:
+# 	docker build \
+# 		-t tbs-client-prod:${TAG} \
+# 		--build-arg CADDYFILE=Caddyfile.prod \
+# 		--build-arg BASE_URL=https://tbstore.allamas.com/api \
+# 		-f Dockerfile.prod .

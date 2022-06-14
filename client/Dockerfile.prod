@@ -7,8 +7,10 @@ COPY ./yarn.lock ./
 RUN yarn install 
 COPY . .
 
-ARG BASE_URL
-ENV REACT_APP_API_URL=${BASE_URL}
+#ARG BASE_URL
+#ENV REACT_APP_API_URL=${BASE_URL}
+
+ENV REACT_APP_API_URL=https://tbstore.allamas.com/api
 
 RUN yarn build
 

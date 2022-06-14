@@ -45,6 +45,7 @@ jobs:
         with:
           length: 7
       - run: echo $SHA
+
       - name: Build and push api server image
         uses: docker/build-push-action@v3
         with:
@@ -53,6 +54,7 @@ jobs:
           tags: |
             allamasln/tbs-api:latest
             allamasln/tbs-api:sha-${{ env.SHA }}
+
       - name: Build and push client-prod
         uses: docker/build-push-action@v3
         with:
@@ -62,7 +64,18 @@ jobs:
           tags: |
             allamasln/tbs-client-prod:latest
             allamasln/tbs-client-prod:sha-${{ env.SHA }}
-      - name: Stop tbs-1
+      - name: Copy files to bts-1
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          source: "Makefile, docker-compose-prod.yml"
+          target: .
+
+      - name: Deploy to bts-1
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -71,14 +84,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            docker-compose down
-      - name: Deploy Stack to bts-1
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            make run-prod
+            make TAG=sha-${{ env.SHA }} MONGO_URI=${{ secrets.MONGO_URI }} deploy
+            sleep 10s
+            docker exec root_client_1 caddy reload --config /srv/etc/caddy/Caddyfile/Caddyfile.prod

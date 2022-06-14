@@ -1,5 +1,5 @@
 const apiURL = process.env.REACT_APP_API_URL
-
+console.log(apiURL)
 async function client(endpoint) {
   const config = {method: 'GET'}
 
