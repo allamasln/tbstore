@@ -5,22 +5,30 @@ import {jsx} from '@emotion/react'
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import {isEmpty, size} from 'lodash'
-import {TableBase, TBody, THead, TR, TH, TD, SortIcon} from 'components/lib'
+import {
+  TableStyles,
+  TBodyStyles,
+  THeadStyles,
+  TRStyles,
+  THStyles,
+  TDStyles,
+  SortIcon,
+} from 'components/lib'
 
 // Context for building a responsive table using css [type="data-label"]
 const TableContext = React.createContext()
 
-const Body = TBody
-const Cell = TD
-const DetailsCell = TD
+const Body = TBodyStyles
+const Cell = TDStyles
+const DetailsCell = TDStyles
 
 export function Table(props) {
   const [columns, setColumns] = React.useState([])
 
   return (
-    <TableBase {...props}>
+    <TableStyles {...props}>
       <TableContext.Provider value={[columns, setColumns]} {...props} />
-    </TableBase>
+    </TableStyles>
   )
 }
 
@@ -44,9 +52,9 @@ function Head({sortProperty, sortOrder, onSort, children: hCells, ...rest}) {
       })
 
   return (
-    <THead {...rest}>
+    <THeadStyles {...rest}>
       <Row>{headers}</Row>
-    </THead>
+    </THeadStyles>
   )
 }
 
@@ -64,10 +72,10 @@ Head.propTypes = {
 
 function Column({id, children, sortOrder, onSort, ...rest}) {
   return (
-    <TH onClick={() => onSort(id)} sortOrder={sortOrder} {...rest}>
+    <THStyles onClick={() => onSort(id)} sortOrder={sortOrder} {...rest}>
       {children}
-      <SortIcon size="15" sortorder={String(sortOrder)} />
-    </TH>
+      <SortIcon size="15" order={String(sortOrder)} />
+    </THStyles>
   )
 }
 
@@ -87,7 +95,7 @@ function Row({children: cells, ...rest}) {
 
   const rowCells = React.Children.map(cells, cell => {
     if (size(columns) === 0) return cell
-    return cell.type === TD
+    return cell.type === TDStyles
       ? cell.props['data-label']
         ? React.cloneElement(cell, {colSpan: size(columns)})
         : React.cloneElement(cell, {
@@ -96,7 +104,7 @@ function Row({children: cells, ...rest}) {
       : cell
   })
 
-  return <TR {...rest}>{rowCells}</TR>
+  return <TRStyles {...rest}>{rowCells}</TRStyles>
 }
 
 export {Head, Body, Column, Row, Cell, DetailsCell}

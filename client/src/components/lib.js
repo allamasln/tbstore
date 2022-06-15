@@ -27,7 +27,8 @@ const SectionHeader = styled.div({
     height: 'auto',
   },
 })
-const Pagination = styled.div({
+
+const PaginationStyles = styled.div({
   display: 'flex',
   justifyContent: 'center',
   backgroundColor: colors.base,
@@ -40,14 +41,13 @@ const Pagination = styled.div({
   },
 })
 
-const Link = styled(LinkRouter)({color: colors.link})
-
-const TableBase = styled.table({
+const TableStyles = styled.table({
   borderCollapse: 'collapse',
   tableLayout: 'fixed',
   width: '100%',
 })
-const THead = styled.thead({
+
+const THeadStyles = styled.thead({
   position: 'sticky',
   top: '100px',
   zIndex: '1',
@@ -60,23 +60,11 @@ const THead = styled.thead({
   },
 })
 
-const collapse = keyframes({
-  from: {
-    transform: 'scaleY(0)',
-    lineHeight: 0,
-  },
-  '40%': {
-    transform: 'scaleY(1)',
-    lineHeight: 1,
-  },
-})
-
 const zoomInOut = keyframes({
   '0%': {transform: 'scale(1)'},
   '30%': {transform: 'scale(0.98)'},
 })
-
-const TBody = styled.tbody({
+const TBodyStyles = styled.tbody({
   zIndex: '0',
   '>:nth-of-type(even)': {
     backgroundColor: colors.gray10,
@@ -102,7 +90,18 @@ const TBody = styled.tbody({
     },
   },
 })
-const TR = styled.tr({
+
+const collapse = keyframes({
+  from: {
+    transform: 'scaleY(0)',
+    lineHeight: 0,
+  },
+  '40%': {
+    transform: 'scaleY(1)',
+    lineHeight: 1,
+  },
+})
+const TRStyles = styled.tr({
   '&[role="complementary"]': {
     padding: '0',
     pointerEvents: 'none',
@@ -120,7 +119,8 @@ const TR = styled.tr({
     },
   },
 })
-const TH = styled.th({
+
+const THStyles = styled.th({
   fontSize: '0.75rem',
   letterSpacing: '0.1em',
   textTransform: 'uppercase',
@@ -133,7 +133,7 @@ const TH = styled.th({
   },
 })
 
-const TD = styled.td({
+const TDStyles = styled.td({
   padding: '0.9rem 1rem',
   color: colors.black,
   [mq.small]: {
@@ -153,7 +153,7 @@ const TD = styled.td({
   },
 })
 
-const arrowDirection = {
+const SortIconTypes = {
   asc: {transform: 'rotate(0)'},
   desc: {transform: 'rotate(180deg)'},
   false: {
@@ -161,17 +161,16 @@ const arrowDirection = {
     visibility: 'hidden',
   },
 }
-
 const SortIcon = styled(FaAngleUp)(
   {
     transition: 'transform 0.2s',
     color: colors.blueLighten10,
     marginLeft: '5px',
   },
-  ({sortorder = 'false'}) => arrowDirection[sortorder],
+  ({order = 'false'}) => SortIconTypes[order],
 )
 
-const disabledButtonStyles = {
+const disabledButtonTypes = {
   true: {
     background: colors.gray10,
     color: colors.gray80,
@@ -184,8 +183,7 @@ const disabledButtonStyles = {
     },
   },
 }
-
-const Button = styled.button(
+const ButtonStyles = styled.button(
   {
     backgroundColor: colors.blueDarken20,
     border: '0',
@@ -194,10 +192,12 @@ const Button = styled.button(
     padding: '0.8rem 1rem',
     fontWeight: 'bold',
   },
-  ({disabled = 'false'}) => disabledButtonStyles[disabled],
+  ({disabled = 'false'}) => disabledButtonTypes[disabled],
 )
 
-const Input = styled.input({
+const Link = styled(LinkRouter)({color: colors.link})
+
+const InputStyles = styled.input({
   border: `2px solid ${colors.gray10}`,
   borderRadius: '3px',
   background: colors.gray,
@@ -207,7 +207,6 @@ const Input = styled.input({
     filter: 'brightness(102%)',
   },
 })
-
 function SearchBox(props) {
   return (
     <form
@@ -222,7 +221,7 @@ function SearchBox(props) {
       }}
       autoComplete="off"
     >
-      <Input {...props} />
+      <InputStyles {...props} />
       <FaSearch css={{marginRight: '1rem'}} size="23" />
     </form>
   )
@@ -232,7 +231,6 @@ const spin = keyframes({
   '0%': {transform: 'rotate(0deg)'},
   '100%': {transform: 'rotate(360deg)'},
 })
-
 const Spinner = styled(FaSpinner)({
   animation: `${spin} 1s linear infinite`,
 })
@@ -260,21 +258,19 @@ function FullPageErrorFallback({error}) {
 }
 
 export {
-  FullPageErrorFallback,
   wrapperGutters,
   SectionHeader,
-  Button,
-  Input,
-  SearchBox,
-  TableBase,
-  THead,
-  TBody,
-  TR,
-  TH,
-  TD,
-  Spinner,
-  Link,
-  Pagination,
-  collapse,
+  PaginationStyles,
+  TableStyles,
+  THeadStyles,
+  TBodyStyles,
+  TRStyles,
+  THStyles,
+  TDStyles,
   SortIcon,
+  ButtonStyles,
+  Link,
+  SearchBox,
+  Spinner,
+  FullPageErrorFallback,
 }

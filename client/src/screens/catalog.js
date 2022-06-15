@@ -5,7 +5,12 @@ import {jsx} from '@emotion/react'
 import * as React from 'react'
 import styled from '@emotion/styled/macro'
 import * as mq from 'styles/media-queries'
-import {SearchBox, SectionHeader, Button, Pagination} from 'components/lib'
+import {
+  SearchBox,
+  SectionHeader,
+  ButtonStyles,
+  PaginationStyles,
+} from 'components/lib'
 import {useTable} from 'utils/table'
 import {useProducts} from 'utils/products'
 import {formatPrice} from 'utils/misc'
@@ -123,17 +128,17 @@ function CatalogScreen() {
         </Table.Body>
       </Table.Table>
 
-      <Pagination>
-        <Button onClick={paging.prevPage} disabled={paging.isFirstPage}>
+      <PaginationStyles>
+        <ButtonStyles onClick={paging.prevPage} disabled={paging.isFirstPage}>
           Anterior
-        </Button>
+        </ButtonStyles>
         <span css={{padding: '0.8rem 1rem'}}>
           {`${stats.start}-${stats.end} de ${stats.itemsCount}`}
         </span>
-        <Button onClick={paging.nextPage} disabled={paging.isLastPage}>
+        <ButtonStyles onClick={paging.nextPage} disabled={paging.isLastPage}>
           Siguiente
-        </Button>
-      </Pagination>
+        </ButtonStyles>
+      </PaginationStyles>
     </>
   )
 }
