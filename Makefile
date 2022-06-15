@@ -7,15 +7,6 @@ run-dev:
 
 ###
 
-build-local:
-	cd client && TAG=${TAG} $(MAKE) build-local
-	cd api && TAG=${TAG} $(MAKE) build
-
-run-local:
-	ENV_VERSION=local docker-compose -f docker-compose-prod.yml up
-
-###
-
 build-prod:
 	cd client && TAG=${TAG} $(MAKE) build-prod
 	cd api && TAG=${TAG} $(MAKE) build
