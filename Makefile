@@ -21,3 +21,5 @@ deploy:
 	docker system prune --all --force
 	TAG=${TAG} MONGO_URI=${MONGO_URI} docker-compose -f docker-compose-prod.yml up -d
 
+stop:
+	docker-compose down
