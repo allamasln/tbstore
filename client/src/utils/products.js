@@ -8,8 +8,8 @@ import {Spinner} from 'components/lib'
 
 const loadingProduct = {
   name: <Spinner />,
-  priceInfo: {amount: <Spinner />, currency: <Spinner />},
-  rating: <Spinner />,
+  priceInfo: {amount: '', currency: ''},
+  rating: '',
   vendor: {
     name: 'Cargando...',
     address: 'Cargando...',
